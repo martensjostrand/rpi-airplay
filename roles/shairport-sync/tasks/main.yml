@@ -1,0 +1,82 @@
+---
+- name: Install dependencies
+  become: true
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - build-essential
+    - git
+    - autoconf
+    - automake
+    - libtool
+    - libdaemon-dev
+    - libasound2-dev
+    - libpopt-dev
+    - libconfig-dev
+    - avahi-daemon
+    - libavahi-client-dev
+    - libssl-dev
+    - libsoxr-dev
+
+- name: Clone Shairport-sync repo
+  git: repo=https://github.com/mikebrady/shairport-sync.git
+       dest={{shairport_sync_source_dir}}
+       force=yes
+
+- name: Autoreconf Shairport-sync
+  command: autoreconf -i -f
+  args:
+    chdir: "{{ shairport_sync_source_dir }}"
+    creates: "/home/jukebox/shairport-sync/configure"
+  register: autoreconf
+
+- name: Configure Shairport-sync
+  command: ./configure --with-alsa --with-avahi --with-ssl=openssl --with-soxr --with-metadata --with-systemd --with-piddir={{ shairport_sync_pid_dir }}
+  when: autoreconf|success
+  register: configure
+  args:
+    chdir: "{{ shairport_sync_source_dir }}"
+    creates: "{{shairport_sync_source_dir}}/Makefile"
+
+- name: Make Shairport-sync
+  command: make
+  when: configure|success
+  register: make
+  args:
+    chdir: "{{ shairport_sync_source_dir }}"
+    creates: "{{shairport_sync_source_dir}}/shairport-sync"
+
+- name: Install Shairport-sync
+  command: make install
+  become: true
+  args:
+    chdir: "{{ shairport_sync_source_dir }}"
+    creates: "/usr/local/bin/shairport-sync"
+
+- name: Create Shairport-sync group
+  group: name=shairport-sync state=present
+  become: true
+
+- name: Create Shairport-sync user
+  user: name=shairport-sync comment="Shairport-sync user" group=shairport-sync groups=audio,shairport-sync home=no
+  become: true
+
+- name: Copy Shairport-sync configuration
+  copy: src=shairport-sync.conf dest=/etc/shairport-sync.conf group=root owner=root mode=644
+  become: true
+  notify:
+    - Restart Shairport-sync
+
+- name: Create pid dir
+  file: path="{{ shairport_sync_pid_dir }}" state=directory mode=0755 owner=shairport-sync group=shairport-sync
+  become: true
+
+- name: Copy unit file with daemon mode
+  template: src=shairport-sync.service.j2 dest=/lib/systemd/system/shairport-sync.service
+  become: true
+  notify:
+    - Systemctl daemon-reload
+    - Restart Shairport-sync
+
+- name: Start Shairport-sync
+  service: name=shairport-sync enabled=yes state=started
+  become: true

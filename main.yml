@@ -1,0 +1,5 @@
+---
+- name: Setup audio receiver
+  hosts: audio
+  roles:
+    - shairport-sync

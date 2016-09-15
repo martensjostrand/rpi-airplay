@@ -1,0 +1,8 @@
+---
+- name: Restart Shairport-sync
+  service: name=shairport-sync state=restarted
+  become: true
+
+- name: Systemctl daemon-reload
+  command: systemctl daemon-reload
+  become: true

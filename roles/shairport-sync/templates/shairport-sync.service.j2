@@ -1,0 +1,17 @@
+[Unit]
+Description=ShairportSync AirTunes receiver
+After=sound.target
+Requires=avahi-daemon.service
+After=avahi-daemon.service
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+PIDFile={{shairport_sync_pid_dir}}/shairport-sync.pid
+ExecStart=/usr/local/bin/shairport-sync -d
+ExecStop=/usr/local/bin/shairport-sync -k
+User=shairport-sync
+Group=shairport-sync
+
+[Install]
+WantedBy=multi-user.target
