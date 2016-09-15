@@ -6,3 +6,7 @@
 - name: Systemctl daemon-reload
   command: systemctl daemon-reload
   become: true
+
+- name: Reload monit daemon
+  command: monit reload
+  become: true

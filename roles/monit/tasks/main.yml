@@ -1,0 +1,8 @@
+---
+- name: Install Monit
+  apt: name=monit state=present update_cache=yes
+  become: yes
+
+- name: Start monit
+  service: name=monit enabled=yes state=started
+  become: yes

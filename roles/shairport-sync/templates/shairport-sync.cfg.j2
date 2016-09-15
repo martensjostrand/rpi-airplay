@@ -1,0 +1,5 @@
+check process shairport-sync with pidfile {{shairport_sync_pid_dir}}/shairport-sync.pid
+  start program = "/usr/sbin/service shairport-sync start"
+  stop program = "/usr/sbin/service shairport-sync stop"
+  if failed host 127.0.0.1 port 5000 then restart
+  if 5 restarts within 5 cycles then timeout

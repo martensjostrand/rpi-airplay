@@ -2,4 +2,5 @@
 - name: Setup audio receiver
   hosts: audio
   roles:
+    - monit
     - shairport-sync
