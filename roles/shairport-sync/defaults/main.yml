@@ -1,2 +1,2 @@
 shairport_sync_source_dir: /home/jukebox/shairport-sync
-shairport_sync_pid_dir: /var/run/shairport-sync
+shairport_sync_pid_dir: /home/shairport-sync/.shairport-sync.d

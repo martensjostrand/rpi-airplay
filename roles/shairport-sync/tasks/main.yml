@@ -57,7 +57,7 @@
   become: true
 
 - name: Create Shairport-sync user
-  user: name=shairport-sync comment="Shairport-sync user" group=shairport-sync groups=audio,shairport-sync home=no
+  user: name=shairport-sync comment="Shairport-sync user" group=shairport-sync groups=audio,shairport-sync home=/home/shairport-sync
   become: true
 
 - name: Copy Shairport-sync configuration
