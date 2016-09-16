@@ -1,0 +1,5 @@
+---
+hard_drive_mount_point: /media/usbdrive
+hard_drive_mount_src: UUID=3db34317-0803-33c1-bc6e-95a49b7f56fd
+minidlna_db_dir: /home/minidlna/.minidlnadb
+minidlna_log_dir: /home/minidlna

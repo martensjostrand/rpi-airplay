@@ -1,0 +1,8 @@
+---
+- name: Restart minidlna
+  service: name=minidlna state=restarted
+  become: true
+
+- name: Reload monit daemon
+  command: monit reload
+  become: true

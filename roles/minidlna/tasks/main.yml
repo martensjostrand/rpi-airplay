@@ -1,0 +1,31 @@
+---
+- name: Install Minidnla
+  apt: name=minidlna state=present update_cache=yes
+  become: true
+
+- name: Copy minidlna conf
+  template: src=minidlna.conf.j2 dest=/etc/minidlna.conf
+  become: true
+  notify:
+    - Restart minidlna
+
+# Create user
+# Create group
+
+- name: Install support for hfsplus
+  become: true
+  apt: name={{item}} state=present update_cache=yes
+  with_items:
+    - hfsplus
+    - hfsutils
+    - hfsprogs
+
+- name: Mount Hard Drive
+  mount: name={{ hard_drive_mount_point }} src='{{ hard_drive_mount_src }}' fstype=hfsplus opts=noatime state=mounted
+  become: true
+
+- name: Copy monit configuration
+  copy: src=minidlna.cfg dest=/etc/monit/conf.d/minidlna.cfg
+  become: true
+  notify:
+    - Reload monit daemon

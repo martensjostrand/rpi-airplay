@@ -3,4 +3,5 @@
   hosts: audio
   roles:
     - monit
+    - minidlna
     - shairport-sync
