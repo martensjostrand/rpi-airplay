@@ -1,6 +1,6 @@
 ---
-- name: Setup audio receiver
-  hosts: audio
+- name: Setup Jukebox
+  hosts: jukebox
   roles:
     - monit
     - minidlna

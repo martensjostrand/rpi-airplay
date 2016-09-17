@@ -1,0 +1,3 @@
+---
+service_name: RPI Jukebox
+audio_output_device: 'hw:1'

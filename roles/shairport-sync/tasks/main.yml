@@ -61,7 +61,7 @@
   become: true
 
 - name: Copy Shairport-sync configuration
-  copy: src=shairport-sync.conf dest=/etc/shairport-sync.conf group=root owner=root mode=644
+  template: src=shairport-sync.conf.j2 dest=/etc/shairport-sync.conf group=root owner=root mode=644
   become: true
   notify:
     - Restart Shairport-sync

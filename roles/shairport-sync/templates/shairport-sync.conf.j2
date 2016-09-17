@@ -1,10 +1,10 @@
 // Play audio on USB interface
 general = {
-  name = "Vardagsrummet";
+  name = "{{ service_name }}";
   log_verbosity = 0;
 };
 
 alsa = {
-  output_device = "hw:1";
+  output_device = "{{ audio_output_device }}";
   mixer_control_name = "PCM";
 };

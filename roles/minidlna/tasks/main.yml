@@ -21,7 +21,7 @@
     - hfsprogs
 
 - name: Mount Hard Drive
-  mount: name={{ hard_drive_mount_point }} src='{{ hard_drive_mount_src }}' fstype=hfsplus opts=noatime state=mounted
+  mount: name={{ hard_drive.mount_point }} src='{{ hard_drive.mount_src }}' fstype=hfsplus opts=noatime state=mounted
   become: true
 
 - name: Copy monit configuration

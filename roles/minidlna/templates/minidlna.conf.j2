@@ -1,10 +1,14 @@
 # Use A, P, and V to restrict media 'type' in directory
-media_dir=A,{{ hard_drive_mount_point }}/media/music
-media_dir=V,{{ hard_drive_mount_point }}/media/video
+{% if hard_drive.music_path is defined%}
+media_dir=A,{{ hard_drive.mount_point }}/media/music
+{% endif %}
+{% if hard_drive.video_path is defined %}
+media_dir=V,{{ hard_drive.mount_point }}/media/video
+{% endif %}
 
-friendly_name=RPI Jukebox
-db_dir={{ minidlna_db_dir }}
-log_dir={{ minidlna_log_dir }}
+friendly_name={{ service_name }}
+db_dir={{ minidlna.db_dir }}
+log_dir={{ minidlna.log_dir }}
 inotify=yes
 notify_interval=895
 
